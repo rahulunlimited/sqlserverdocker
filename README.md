@@ -1,8 +1,7 @@
 # Docker Lab
-The exercises in this Lab works with the custom SQL Server images created. 
+The exercises in this Lab works with the custom SQL Server images created. The images contain AdventureWorks and WideWorldImporters database already copied in.
 
 The first set of exercises guides you on how to use the container and custom image. 
-
 The second set of exercises guides you on how to build custom image.
 
 
