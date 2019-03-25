@@ -24,6 +24,14 @@ Please note here -p is for Port. The code above maps TCP Port 1501 on the host e
 For Server name, you can use either *.* or *localhost* or *127.0.0.1* if you are connecting from the host computer.
 If you are connecting from a different computer, then find the IP Address before connecting.
 
+### Ports
+Use Port 1501 when using the IP Address from the host
+Use Port 1433 when using the IP Address from container
+
+#### Get IP Address from container
+```
+docker inspect sql1 | grep IPAddress
+```
 
 ### Alternatively, you can use **sqlcmd** to connect to SQL Server
 #### Enter the cotainer
@@ -76,8 +84,9 @@ docker exec -it sql1 sh "/scripts/restore-sampledb.sh"
 ```
 
 ##### If password is chaged, Copy the password file to the container before executing the above script
+```
 docker cp "<SRC_PATH>/sqlserver.pwd" sql1:/scripts/
-
+```
 > Please note the password needs to be updated only if you are restoring the database. To connect to SQL Server you do not need to update the password file, you can simply provide the updated password while connecting.
 
 #### If the 
