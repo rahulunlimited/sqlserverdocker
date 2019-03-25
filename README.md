@@ -7,10 +7,7 @@ The second set of exercises guides you on how to build custom image.
 
 ### Start Docker Container
 ```
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' `
-	-p 1501:1433 `
-	--name sql1 `
-	-d rahulunlimited/sqlserver:2017-awauto
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql1 -d rahulunlimited/sqlserver:2017-awauto
 ```
 The password Sqlw1thD0ck3r is a default password used to restore the database the first time the container is started. The password can be modified later. However, it is required the first time.
 > This is not required using the standard Microsoft images.
