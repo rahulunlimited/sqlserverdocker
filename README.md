@@ -24,7 +24,9 @@ Please note here -p is for Port. The code above maps TCP Port 1501 on the host e
 | Login | sa |
 | Password | Sqlw1thD0ck3r |
 
-For Server name, you can use either . or localhost or 127.0.0.1
+For Server name, you can use either *.* or *localhost* or *127.0.0.1* if you are connecting from the host computer.
+If you are connecting from a different computer, then find the IP Address before connecting.
+
 
 #### Alternatively, you can use **sqlcmd** to connect to SQL Server
 ##### Enter the cotainer
@@ -42,7 +44,7 @@ docker exec -it sql1 bash
 /opt/mssql-tools/bin/sqlcmd -S localhost,1501 -U sa -P Sqlw1thD0ck3r
 ```
 
-Note : When connecting from outside the container, the Port Number is required to be mentioned
+> Note : When connecting from outside the container, the Port Number is required to be mentioned
 
 #### Enter inside Container
 ```
@@ -62,14 +64,23 @@ ls
 
 #### Restore the databases
 ```
-./scripts/db-init.sh
+./scripts/restore-sampledb.sh
 ```
+> This will take some time as the WideWorldImporters database needs to be upgraded to the latest SQL Server version in the container.
 
+If you have changed the password for the SQL Server, please update the password to be used for database restore
+###### Update new password in the container as the default password is no longer valid
+echo "Sql2017isfast1" > /scripts/sqlserver.pwd
 
 #### Alternatively, Execute the database restore script from outside the container
 ```
 docker exec -it sql1 sh "/scripts/restore-sampledb.sh"
 ```
+
+##### If password is chaged, Copy the password file to the container before executing the above script
+docker cp "<SRC_PATH>/sqlserver.pwd" sql1:/scripts/
+
+> Please note the password needs to be updated only if you are restoring the database. To connect to SQL Server you do not need to update the password file, you can simply provide the updated password while connecting.
 
 #### If the 
 
