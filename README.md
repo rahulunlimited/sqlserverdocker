@@ -1,22 +1,13 @@
-# Docker Lab
-The exercises in this Lab works with the custom SQL Server images created. The images contain AdventureWorks and WideWorldImporters database already copied in.
+# Docker Labs
+The exercises in this Lab works with the custom SQL Server images created. The custom images contain AdventureWorks and WideWorldImporters database already copied in.
 
 The first set of exercises guides you on how to use the container and custom image. 
 The second set of exercises guides you on how to build custom image.
 
 
-#### Build Docker image
-```
-docker build . -t rahulunlimited/sqlserver:2017-sampledb
-```
-#### Publish Docker image
-```
-docker push rahulunlimited/sqlserver:2017-sampledb
-```
-
 #### Start Docker Container
 ```
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql1 -d rahulunlimited/sqlserver:2017-sampledb
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql1 -d rahulunlimited/sqlserver:2017-awauto
 ```
 
 #### Enter inside Container
@@ -40,10 +31,7 @@ ls
 ./scripts/db-init.sh
 ```
 
-#### Exit from container
-```
-exit
-```
+#### Exit from container using `exit`
 
 #### Alternatively, Execute the database restore script from outside the container
 ```
@@ -69,3 +57,11 @@ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1502:1433 --name sql2 -d rahulunlimited/sqlserver:2017-sampledb
 
 
+#### Build Docker image
+```
+docker build . -t rahulunlimited/sqlserver:2017-sampledb
+```
+#### Publish Docker image
+```
+docker push rahulunlimited/sqlserver:2017-sampledb
+```
