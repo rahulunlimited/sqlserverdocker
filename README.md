@@ -66,9 +66,10 @@ ls
 > This will take some time as the WideWorldImporters database needs to be upgraded to the latest SQL Server version in the container.
 
 If you have changed the password for the SQL Server, please update the password to be used for database restore
-###### Update new password in the container as the default password is no longer valid
+##### Update new password in the container as the default password is no longer valid
+```
 echo "Sql2017isfast1" > /scripts/sqlserver.pwd
-
+```
 #### Alternatively, Execute the database restore script from outside the container
 ```
 docker exec -it sql1 sh "/scripts/restore-sampledb.sh"
