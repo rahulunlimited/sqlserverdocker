@@ -1,5 +1,9 @@
 # Docker Lab
-My repository for SQL Server with Docker
+The exercises in this Lab works with the custom SQL Server images created. 
+
+The first set of exercises guides you on how to use the container and custom image. 
+
+The second set of exercises guides you on how to build custom image.
 
 
 #### Build Docker image
