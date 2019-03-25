@@ -16,9 +16,9 @@ Please note here -p is for Port. The code above maps TCP Port 1501 on the host e
 #### Use SSMS or Azure Data Studio to connect
 | Field | Value |
 |----------|------------|
-| Server name: | localhost,1501 |
+| Server name | localhost,1501 |
 | Authentication | SQL Server Authentication |
-| Login: | sa |
+| Login | sa |
 | Password | Sqlw1thD0ck3r |
 
 For Server name, you can use either . or localhost or 127.0.0.1
