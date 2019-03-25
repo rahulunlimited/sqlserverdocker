@@ -20,17 +20,21 @@ Please note here -p is for Port. The code above maps TCP Port 1501 on the host e
 
 For Server name, you can use either . or localhost or 127.0.0.1
 
-#### Alternatively, you can use sqlcmd to connect to SQL Server
+#### Alternatively, you can use **sqlcmd** to connect to SQL Server
 ##### Enter the cotainer
 ```
 docker exec -it sql1 bash
 ```
 
 ##### Start SQL Server
+```
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Sqlw1thD0ck3r
+```
 
 #### Connect to SQL Server using sqlcmd from outside the container
+```
 /opt/mssql-tools/bin/sqlcmd -S localhost,1501 -U sa -P Sqlw1thD0ck3r
+```
 
 Note : When connecting from outside the container, the Port Number is required to be mentioned
 
