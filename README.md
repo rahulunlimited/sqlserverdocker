@@ -1,7 +1,7 @@
 # Docker Labs
 The exercises in this Lab works with the custom SQL Server images created. The custom images contain AdventureWorks and WideWorldImporters database already copied in.
-There are 2 images availabe on the [Docker Hub](https://hub.docker.com/r/rahulunlimited/sqlserver/tags) page:
-- 2017-awauto : Image with AdventureWorks database already availble
+There are 2 images available on the [Docker Hub](https://hub.docker.com/r/rahulunlimited/sqlserver/tags) page:
+- 2017-awauto : Image with AdventureWorks database already available. Also has the backups of AdventureWorks and WideWorldImporters.
 - 2017-sampledb : Image with backups of AdventureWorks and WideWorldImporters. The backups needs to be restored after the container is created.
 
 The first set of exercises guides you on how to use the container and custom image. 
@@ -12,7 +12,7 @@ The second set of exercises guides you on how to build custom image.
 ```
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql1 -d rahulunlimited/sqlserver:2017-awauto
 ```
-The password Sqlw1thD0ck3r is a default password used to restore the database the first time the container is started. The password can be modified later. However, the default password is required the first time.
+The password Sqlw1thD0ck3r is the default password used to restore the database the first time the container is started. The password can be modified later. However, the default password is required the first time.
 > This is not required using the standard Microsoft images.
 
 The code above will check if the images **rahulunlimited/sqlserver:2017-awauto** exists on the computer. If the image does not exist, it will download the image first.
@@ -35,6 +35,12 @@ For Server name, you can use either *.* or *localhost* or *127.0.0.1* if you are
 If you are connecting from a different computer, then find the IP Address before connecting.
 
 > Please note in the examples below sql1 is the name of the container. It could be any name that you chose to give to the container.
+
+You can also connect to the container using the IP Address of the container. (This can be done only from the host computer)
+
+#### Ports
+Use Port 1501 when using the IP Address from the host
+Use Port 1433 when using the IP Address from container
 
 #### Get Container's IP Address from host computer
 ```
@@ -67,7 +73,7 @@ docker exec -it sql1 bash
 cat /etc/os-release
 ```
 
-#### Start SQL Server
+#### Start SQL Server using sqlcmd
 ```
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Sqlw1thD0ck3r
 ```
@@ -78,12 +84,10 @@ cat /etc/os-release
 ```
 
 > Note : When connecting from outside the container, the Port Number is required to be mentioned
-#### Ports
-Use Port 1501 when using the IP Address from the host
-Use Port 1433 when using the IP Address from container
 
 
-### Enter inside Container
+
+### Start an interactive shell inside the container
 ```
 docker exec -it sql1 bash
 ```
@@ -96,7 +100,7 @@ unalias ls
 ls
 ````
 
-#### Exit from container using `exit`
+#### You can exit from container anytime using `exit`
 
 
 #### Restore the databases
@@ -122,7 +126,7 @@ echo "Sql2017isfast1" > /scripts/sqlserver.pwd
 docker exec -it sql1 sh "/scripts/restore-sampledb.sh"
 ```
 
-##### If password is chaged, Copy the password file to the container before executing the above script
+##### If password is chaged, you can copy the updated password file to the container before executing the above script
 ```
 docker cp "<SRC_PATH>/sqlserver.pwd" sql1:/scripts/
 ```
@@ -159,7 +163,7 @@ The xx above could be the initial 1, 2 or more characters for the container id w
 > The container should be stopped before it is removed
 > Add data in the container will be lost, once the container is removed. We will look at how to persist data from container so that it is not lost even after the container is removed.
 
-### Check logs from Docker
+### Check logs from Docker, This is very helpful if there are any errors while starting the container
 ```
 docker logs sql1
 ```
