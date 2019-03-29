@@ -37,7 +37,7 @@ The above file performs the below steps:
 2. Create folders in the container to store the backup and scripts
 3. Copy the backup files placed in the subfolder /sqldbbackup to container /var/opt/sqldbbackup
 4. Copy the script files to the container folder /scripts
-5. Mark the 2 scripts as executable
+5. Mark the script as executable
 6. Command to execute SQL Server in the background on start of the container
 
 #### Password file
@@ -94,5 +94,108 @@ If you are not already logged on to DockerHub, use the command `docker login` to
 
 You can logout using the command `docker logout`
 
-## Build a docker
+### Test the custom image
+Run the following command to test the newly created docker image
+```
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1502:1433 --name sql2 -d rahulunlimited/sqlserver:2017-sampledb
+```
+
+### Restore Adventureworks Database
+```
+docker exec -it sql1 sh "/scripts/restore-sampledb.sh"
+```
+
+### Connect to container and browse the database
+Connect to container using the servername localhost,1502 with the user id/password sa/Sqlw1thD0ck3r and browse the Adventureworks2017 database
+
+
+# Custom Image with database restored on startup
+In the following exercise we will create a new image which will automatically restore the database on starting the container
+
+
+### Create a DockerFile
+Create a new file in a text-editor and paste the below syntax
+```
+# Get SQL Server Base Image - 2017
+FROM mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+
+# Make a Directory for SQL Server Backup Files & Scripts
+RUN mkdir /var/opt/sqldbbackup
+RUN mkdir /var/opt/scripts
+
+# Copy the backup files to container
+COPY /sqldbbackup/. /var/opt/sqldbbackup
+
+# Copy Scripts
+COPY /scripts/. /scripts
+
+# Mark the script as executable
+RUN chmod +x /scripts/db-init.sh
+RUN chmod +x /scripts/restore-sampledb.sh
+
+#Execute an entrypoint script and start SQL Server in background (from within the script)
+CMD /bin/bash ./scripts/entrypoint.sh
+```
+
+The above file performs the below steps:
+1. Start with the SQL Server 2017 Base Image
+2. Create folders in the container to store the backup and scripts
+3. Copy the backup files placed in the subfolder /sqldbbackup to container /var/opt/sqldbbackup
+4. Copy the script files to the container folder /scripts
+5. Mark the 2 scripts as executable
+6. Command to execute the script entrypoint.sh. The script starts SQL Server in the background and restores the AdventureWorks2017 datdabase.
+
+#### Entrypoint.sh
+Copy the below text for the script to start sqlcmd and execute the database restore script above
+```
+/scripts/db-init.sh & /opt/mssql/bin/sqlservr
+```
+The above script starts the SQL Server in the background and executes the db-init.sh to restore the database
+
+### db-init.sh
+```
+#wait for the SQL Server to come up
+sleep 15
+
+pwd=$(cat "/scripts/sqlserver.pwd")
+
+#run the setup script to create the DB and the schema in the DB
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $pwd -d master -i /scripts/restore-db-aw.sql
+```
+The above script sleeps for 15 seconds (to wait for SQL Server to start) and then executes the script to restore AdventureWorks2017 database. 
+
+### Verify the scripts
+After the above steps, you should have the below files
+```
+\Dockerfile
+\Dockerfile.2017-awauto
+\sqldbbackup\Adventureworks2017.bak
+\scripts\restore-db-aw.sql
+\scripts\restore-sampledb.sh
+\scripts\db-init.sh
+\scripts\entrypoint.sh
+```
+
+### Build docker image
+Execute the following script to build a docker image
+```
+docker build -f Dockerfile.2017-awauto . -t rahulunlimited/sqlserver:2017-awauto
+```
+In the example above we specify the name of the Dockerfile instead of the default name. (Default file name is Dockerfile)
+
+### Publish the docker image to DockerHub
+```
+docker push rahulunlimited/sqlserver:2017-awauto
+```
+
+### Test the custom image
+Run the following command to test the newly created docker image
+```
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1503:1433 --name sql3 -d rahulunlimited/sqlserver:2017-awauto
+```
+
+### Connect to container and browse the database
+Connect to container using the servername localhost,1502 with the user id/password sa/Sqlw1thD0ck3r and browse the Adventureworks2017 database.
+> Notice in this case you did not had to restore the AdventureWorks2017 database and it was restored automatically on start of the container.
+
 
