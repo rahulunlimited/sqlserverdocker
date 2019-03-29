@@ -35,3 +35,56 @@ Before you upgrade the container to SQL Server 2019, you need to stop the contai
 ```
 docker stop sql2017
 ```
+
+### Start a container with SQL Server 2019 Ubuntu image with the same volume
+```
+docker run -v sqlvolume:/var/opt/mssql -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql2019ubuntu -d mcr.microsoft.com/mssql/server:2019-CTP2.4-ubuntu
+```
+If you immediately try to connect to the container, you may get error connecting as the database needs to be upgraded first to SQL Server 2019.
+You can check the updates looking at the container logs
+####
+docker logs sql2019ubuntu
+####
+
+### Check SQL Server version for the container sql2017
+```
+docker exec -it sql2019ubuntu /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P Sqlw1thD0ck3r -Q 'SELECT @@VERSION'
+```
+The output shows that the server is now upgraded to **SQL Server 2019** and the version is Developer Edition (64-bit) on **Linux (Ubuntu 16.04.6 LTS) <X64>**
+
+## Upgrade to SQL Server 2019 RHEL
+If you want you can now update the version to SQL Server 2019 RHEL
+
+### Stop the container
+```
+docker stop sql2019ubuntu
+```
+
+### Start a container with SQL Server 2019 RHEL image with the same volume
+```
+docker run -v sqlvolume:/var/opt/mssql -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sqlw1thD0ck3r' -p 1501:1433 --name sql2019rhel -d mcr.microsoft.com/mssql/rhel/server:2019-CTP2.4
+```
+Similar to pervious step there could be error connecting immediately
+####
+docker logs sql2019rhel
+####
+
+### Check SQL Server version for the container sql2017
+```
+docker exec -it sql2019rhel /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P Sqlw1thD0ck3r -Q 'SELECT @@VERSION'
+```
+The output shows that the server is now upgraded to **SQL Server 2019** and the version is Developer Edition (64-bit) on **Linux (Red Hat Enterprise Linux Server 7.6 (Maipo))** <X64>
+
+## Revert to SQL Server 2019 Ubuntu
+
+### Stop the sql2019rhel container
+```
+docker stop sql2019rhel
+```
+
+### Start the sql2019ubuntu container
+```
+docker start sql2019ubuntu
+```
+
+## Cleanup
