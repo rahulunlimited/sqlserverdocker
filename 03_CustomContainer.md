@@ -68,7 +68,7 @@ pwd=$(cat "/scripts/sqlserver.pwd")
 ```
 The above script reads the password from the **sqlserver.pwd** file and executes the database restore script.
 
-### Verify the scripts
+### Verify the files
 After the above steps, you should have the below files
 ```
 \Dockerfile
@@ -145,14 +145,15 @@ The above file performs the below steps:
 5. Mark the 2 scripts as executable
 6. Command to execute the script entrypoint.sh. The script starts SQL Server in the background and restores the AdventureWorks2017 datdabase.
 
-#### Entrypoint.sh
-Copy the below text for the script to start sqlcmd and execute the database restore script above
+### entrypoint.sh
+Create a new file entrypoint.sh in the \scripts folder and copy the below text for the script to start sqlcmd and execute the database restore script above
 ```
 /scripts/db-init.sh & /opt/mssql/bin/sqlservr
 ```
 The above script starts the SQL Server in the background and executes the db-init.sh to restore the database
 
 ### db-init.sh
+Create a new file db-init.sh in the \scrips folder and copy the below text
 ```
 #wait for the SQL Server to come up
 sleep 15
@@ -164,7 +165,7 @@ pwd=$(cat "/scripts/sqlserver.pwd")
 ```
 The above script sleeps for 15 seconds (to wait for SQL Server to start) and then executes the script to restore AdventureWorks2017 database. 
 
-### Verify the scripts
+### Verify the files
 After the above steps, you should have the below files
 ```
 \Dockerfile
