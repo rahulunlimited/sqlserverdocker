@@ -1,8 +1,8 @@
 # Docker Labs
 The exercises in this Lab works with the custom SQL Server images created. The custom images contain AdventureWorks database already copied in.
 There are 2 images available on the [Docker Hub](https://hub.docker.com/r/rahulunlimited/sqlserver/tags) page:
-- 2017-awauto : Image with AdventureWorks database already available. Also has the backups of AdventureWorks and WideWorldImporters.
-- 2017-sampledb : Image with backups of AdventureWorks and WideWorldImporters. The backups needs to be restored after the container is created.
+- 2017-awauto : Image with AdventureWorks database already available.
+- 2017-sampledb : Image with backups of AdventureWorks. The backups needs to be restored after the container is created.
 
 
 ### Start Docker Container
