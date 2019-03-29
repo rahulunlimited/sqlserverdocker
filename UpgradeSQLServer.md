@@ -28,7 +28,7 @@ docker exec -it sql2017 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P Sqlw1t
 
 You can also connect to container sql2017 using Azure Data Studio or SSMS and query the data, check version etc.
 
-## Upgrade
+## Upgrade to SQL Server 2019
 Before you upgrade the container to SQL Server 2019, you need to stop the container as the databases in the volume are already mounted.
 
 ### Stop the container
@@ -88,3 +88,45 @@ docker start sql2019ubuntu
 ```
 
 ## Cleanup
+
+### Check existing containers
+```
+docker ps --all
+```
+### Stop the currently running container
+```
+docker stop sql2019rhel
+```
+
+### Remove the containers
+```
+docker rm sql2017 sql2019ubuntu sql2019rhel
+```
+
+You can also remove the containers giving the initial 1 or 2 characters of Container ID. (Please make sure that the string uniquely identifies the container
+```
+docker rm bb 4e b4
+```
+
+### Check any Volumes
+```
+docker volume ls
+```
+
+### Remove the volume
+```
+docker volume rm sqlvolume
+```
+
+### Check the current images
+```
+docker images --all
+```
+
+### Remove any image (or leave it there for future exercises)
+> If you remove the image, then the next time you use the image it will download again
+```
+docker image rm <<imageid>>
+#docker image rm REPOSITORY:TAG
+docker image rm mcr.microsoft.com/mssql/server:2019-CTP2.4-ubuntu
+```
