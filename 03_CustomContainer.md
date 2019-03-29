@@ -43,7 +43,9 @@ The above file performs the below steps:
 #### Password file
 In the subfolder scripts create a file **sqlserver.pwd** and enter the text **Sqlw1thD0ck3r**
 > You can replace the password with any other password text as well. However please remember to start the container with the same password as here. This is required as the database is restored using the same password.
+
 > This is not required with Microsoft's standard SQL Server image as it does not come with any sample database. And the password given at the start is configured as default sa password.
+
 > The above password can also be modified at any later time to a more secure password
 
 #### Database restore SQL script
@@ -64,3 +66,33 @@ pwd=$(cat "/scripts/sqlserver.pwd")
 #run the setup script to create the DB and the schema in the DB
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $pwd -d master -i /scripts/restore-db-aw.sql
 ```
+The above script reads the password from the **sqlserver.pwd** file and executes the database restore script.
+
+### Verify the scripts
+After the above steps, you should have the below files
+```
+\Dockerfile
+\sqldbbackup\Adventureworks2017.bak
+\scripts\restore-db-aw.sql
+\scripts\restore-sampledb.sh
+```
+
+### Build docker image
+Execute the following script to build a docker image
+```
+docker build . -t rahulunlimited/sqlserver:2017-sampledb
+```
+You can give any name to the tag. However, if you want to upload the docker image to GitHub then the format should be as follows:
+useraccount/repository:tag
+
+### Publish the docker image to DockerHub
+```
+docker push rahulunlimited/sqlserver:2017-sampledb
+```
+
+If you are not already logged on to DockerHub, use the command `docker login` to log on to DockerHub
+
+You can logout using the command 'docker logout`
+
+
+
