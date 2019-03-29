@@ -92,7 +92,7 @@ docker push rahulunlimited/sqlserver:2017-sampledb
 
 If you are not already logged on to DockerHub, use the command `docker login` to log on to DockerHub
 
-You can logout using the command 'docker logout`
+You can logout using the command `docker logout`
 
-
+## Build a docker
 
