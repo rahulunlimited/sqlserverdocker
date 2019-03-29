@@ -6,7 +6,7 @@ The following exercise guides you to start a container with SQL Server 2017. The
 Containers by nature are ephemeral meaning once the containers are removed, all data within the containers are also removed. You can persist database outside the containers using Volumes or Mounting external folders in the containers. As we want to upgrade the database(s) from SQL Server 2017 to SQL Server 2019, we need to persist the data outside the container.
 > Data within the containers stays in between container stop and start.
 
-> If you are trying the below exercises on Linux you may have to prefix all the command with `sudo` for e.g. 'sudo docker ps --all`
+> If you are trying the below exercises on Linux you may have to prefix all the command with `sudo` for e.g. `sudo docker ps --all`
 
 ## Start a container with volume to persist the data
 ```
